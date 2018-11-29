@@ -6,10 +6,10 @@ import java.util.ArrayList;
  *
  * @author Claire, Esther & Orann
  */
-public class Environment {
-    private ArrayList<ArrayList<Square>> chessboard;
+public class ChessBoard {
+    private ArrayList<ArrayList<Square>> board;
 
-    public Environment() {
+    public ChessBoard() {
         Rook rookW1 = new Rook(Color.WHITE, new Position(1, 'a'));
         Knight knightW1 = new Knight(Color.WHITE, new Position(1, 'b'));
         Bishop bishopW1 = new Bishop(Color.WHITE, new Position(1, 'c'));
@@ -30,7 +30,7 @@ public class Environment {
         Knight knightB2 = new Knight(Color.BLACK, new Position(8, 'g'));
         Rook rookB2 = new Rook(Color.BLACK, new Position(8, 'h'));
         
-        chessboard = new ArrayList<>();
+        board = new ArrayList<>();
         
         //Black pieces
         ArrayList<Square> line = new ArrayList<>();
@@ -42,21 +42,21 @@ public class Environment {
         line.add(new Square(bishopB2));
         line.add(new Square(knightB2));
         line.add(new Square(rookB2));
-        chessboard.add(line);
+        board.add(line);
         
         //Black pawns
         line = new ArrayList<>();
         for(int i = 97 ; i<= 104; i++){
             line.add(new Square(new Pawns(Color.BLACK, new Position(2,(char) i))));
         }
-        chessboard.add(line);
+        board.add(line);
         
         for(int i=0; i<4; i++){
             line = new ArrayList<>();
             for(int j=0; i<8; i++){
                 line.add(new Square(null));
             }
-            chessboard.add(line);
+            board.add(line);
         }
         
         //White pawns
@@ -64,7 +64,7 @@ public class Environment {
         for(int i = 97 ; i<= 104; i++){
             line.add(new Square(new Pawns(Color.WHITE, new Position(7,(char) i))));
         }
-        chessboard.add(line);
+        board.add(line);
         
         //White pieces
         line = new ArrayList<>();
@@ -76,8 +76,23 @@ public class Environment {
         line.add(new Square(bishopW2));
         line.add(new Square(knightW2));
         line.add(new Square(rookW2));
-        chessboard.add(line);       
+        board.add(line);       
     }
     
+    public ChessBoard(ChessBoard board){
+        this.board = (ArrayList<ArrayList<Square>>) board.getBoard().clone();
+    }
     
+    @Override
+    public ChessBoard clone(){
+        return new ChessBoard(this);
+    }
+    
+    public void doMove(String move){
+        
+    }
+
+    public ArrayList<ArrayList<Square>> getBoard() {
+        return board;
+    }
 }
