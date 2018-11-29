@@ -13,8 +13,16 @@ public class Queen extends Piece{
     }
 
     @Override
-    public ArrayList<Position> getPossibleMoves() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Position> getPossibleMoves(ChessBoard game) {        
+        ArrayList<Position> possibleMoves = new ArrayList<>();
+        Piece[] pieces = { 
+            new Bishop(this.getColor(), this.getPosition()), 
+            new Rook(this.getColor(), this.getPosition())
+        };
+        
+        for (Piece piece : pieces) {
+            possibleMoves.addAll(piece.getPossibleMoves(game));
+        }
+        return possibleMoves;   
     }
-    
 }

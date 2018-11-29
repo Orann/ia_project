@@ -38,4 +38,10 @@ public class Node {
     public boolean isOurMove() {
         return isOurMove;
     }
+
+    public void setHeuristic(int heuristic) {
+        this.heuristic = heuristic;
+    }
+    
+    
 }

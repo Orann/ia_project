@@ -13,5 +13,11 @@ public class Square {
     
     public boolean isEmpty(){
         return (this.piece == null);
-    }    
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+    
+    
 }

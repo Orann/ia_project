@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class ChessBoard {
     private ArrayList<ArrayList<Square>> board;
+    public int SIZE = 8;
 
     public ChessBoard() {
         Rook rookW1 = new Rook(Color.WHITE, new Position(1, 'a'));
@@ -95,4 +96,15 @@ public class ChessBoard {
     public ArrayList<ArrayList<Square>> getBoard() {
         return board;
     }
+
+    Square getNeighbour(int x, int y, int xOffset, int yOffset) {
+        int neighbourX = x + xOffset;
+        int neighbourY = y + yOffset;
+        Square ret = null;
+        if ((neighbourX >= 0) && (neighbourX<SIZE) && (neighbourY>=0) && (neighbourY<SIZE)){
+            ret = board.get(neighbourX).get(neighbourY);
+        }
+        return ret;
+    }
+
 }

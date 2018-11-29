@@ -13,8 +13,8 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Position> getPossibleMoves() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Position> getPossibleMoves(ChessBoard game) {
+        return null;
     }
     
 }
