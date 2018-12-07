@@ -176,23 +176,18 @@ public class UCIChess {
      * *************************
      */
     public UCIChess(String engine) {
-        try {
-            //build & start chess engine
-            p = new ProcessBuilder(engine).start();
-            //get in & out streams
-            out = p.getOutputStream();
-            in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            //prepare optionsList
-            listOfOptions = new ArrayList<>();
-            //prepare simple line info list
-            listInfoSimple = new ArrayList<>();
+        //build & start chess engine
+        //p = new ProcessBuilder(engine).start();
+        //get in & out streams
+        out = System.out;
+        in = new BufferedReader(new InputStreamReader(System.in));
+        //prepare optionsList
+        listOfOptions = new ArrayList<>();
+        //prepare simple line info list
+        listInfoSimple = new ArrayList<>();
 
-            //prepare detailed info list
-            listInfoDetail = new ArrayList<>();
-
-        } catch (IOException ex) {
-            Logger.getLogger(UCIChess.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //prepare detailed info list
+        listInfoDetail = new ArrayList<>();
     }
 
     /**
@@ -361,7 +356,9 @@ public class UCIChess {
         isUCICall = true;
         String line; //temp String
         try {
-            while ((line = in.readLine()) != null) {
+            System.out.println("[INPUT] "+System.in.available());
+            line = in.readLine();
+            while (line != null) {
                 if (trace) {
                     System.out.println(line);
                 }
@@ -382,6 +379,7 @@ public class UCIChess {
                 if (line.compareToIgnoreCase("uciok") == 0) {
                     return true;
                 }
+                line = in.readLine();
             }
         } catch (IOException ex) {
             Logger.getLogger(TestUCIChessAPI.class.getName()).log(Level.SEVERE, null, ex);
