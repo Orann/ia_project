@@ -1,7 +1,5 @@
 package project;
 
-import ucichess.ChessBoard;
-import ucichess.UCIChess;
 /**
  *
  * @author Claire, Esther, Orann
