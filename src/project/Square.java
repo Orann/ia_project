@@ -1,5 +1,7 @@
 package project;
 
+import project.pieces.Piece;
+
 /**
  *
  * @author Claire, Esther & Orann

@@ -1,6 +1,11 @@
-package project;
+package project.pieces;
 
+import project.pieces.Piece;
+import project.pieces.Bishop;
 import java.util.ArrayList;
+import project.ChessBoard;
+import project.Color;
+import project.Position;
 
 /**
  *

@@ -1,5 +1,11 @@
 package project;
 
+import project.pieces.Rook;
+import project.pieces.Queen;
+import project.pieces.Pawns;
+import project.pieces.Knight;
+import project.pieces.King;
+import project.pieces.Bishop;
 import java.util.ArrayList;
 
 /**
@@ -97,7 +103,7 @@ public class ChessBoard {
         return board;
     }
 
-    Square getNeighbour(int x, int y, int xOffset, int yOffset) {
+    public Square getNeighbour(int x, int y, int xOffset, int yOffset) {
         int neighbourX = x + xOffset;
         int neighbourY = y + yOffset;
         Square ret = null;
