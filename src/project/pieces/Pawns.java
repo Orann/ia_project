@@ -14,6 +14,7 @@ public class Pawns extends Piece {
 
     public Pawns(Color color, Position position) {
         super(color, position);
+        weight = 1;
     }
 
     @Override

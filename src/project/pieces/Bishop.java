@@ -14,6 +14,7 @@ public class Bishop extends Piece{
 
     public Bishop(Color color, Position position) {
         super(color, position);
+        weight = 3;
     }
 
     @Override

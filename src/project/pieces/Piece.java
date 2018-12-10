@@ -14,6 +14,7 @@ import project.Position;
 public abstract class Piece {
     private Color color;
     protected Position position;
+    protected int weight;
 
     public Piece(Color color, Position position) {
         this.color = color;
@@ -33,7 +34,10 @@ public abstract class Piece {
     public void setPosition(Position position) {
         this.position = position;
     }
-    
+
+    public int getWeight() {
+        return weight;
+    }   
     
     protected boolean isOpponent(Piece neighbour) {
         return !(neighbour.getColor() == this.color);
