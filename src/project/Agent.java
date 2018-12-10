@@ -73,21 +73,39 @@ public class Agent {
 
     private ArrayList<ArrayList<Position>> getAllPossibleMoves(boolean ourMove, ChessBoard currentBoard) {
         Piece piece; 
+        Position positionPiece;
         ArrayList<Position> move;
         ArrayList<ArrayList<Position>> possibleMoves = new ArrayList<>();
+        Color colorMove;
+        if(ourMove){
+            colorMove = color;
+        } else {
+            if(color == Color.BLACK){
+                colorMove = Color.WHITE;
+            } else {
+                colorMove = Color.BLACK;
+            }
+        }
+        
         for(int i = 0 ; i < 8 ; i++){
-            for(int j = 0 ; j < 8 ; j++){
+            for(int j = 0 ; j < 8 ; j++){                
                 piece = currentBoard.getBoard().get(i).get(j).getPiece();
+                positionPiece = piece.getPosition();
                 if(piece != null){
-                    if(piece.getColor() == color){
-                        
+                    if(piece.getColor() == colorMove){
+                        for(Position to : piece.getPossibleMoves(currentBoard)){
+                            move = new ArrayList<>();
+                            move.add(positionPiece);
+                            move.add(to);
+                            possibleMoves.add(move);
+                            move.clear();
+                        }
                     }                    
                 }
                 
             }
-        }
-        
-        return null;
+        }        
+        return possibleMoves;
     }
 
     private int bestHeuristicInit(boolean ourMove) {
