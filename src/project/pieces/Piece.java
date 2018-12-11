@@ -14,6 +14,7 @@ import project.Position;
 public abstract class Piece {
     private Color color;
     protected Position position;
+    String name;
 
     public Piece(Color color, Position position) {
         this.color = color;
@@ -38,4 +39,13 @@ public abstract class Piece {
     protected boolean isOpponent(Piece neighbour) {
         return !(neighbour.getColor() == this.color);
     }
+
+    @Override
+    public String toString() {
+        return this.color.toString()+this.name;
+    }
+    
+    
+    
+    
 }

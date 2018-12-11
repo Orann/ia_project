@@ -7,6 +7,7 @@ import project.pieces.Knight;
 import project.pieces.King;
 import project.pieces.Bishop;
 import java.util.ArrayList;
+import project.pieces.Piece;
 
 /**
  *
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class ChessBoard {
     private ArrayList<ArrayList<Square>> board;
     public int SIZE = 8;
+    public int A = (int) 'a';
 
     public ChessBoard() {
         Rook rookW1 = new Rook(Color.WHITE, new Position(1, 'a'));
@@ -54,13 +56,13 @@ public class ChessBoard {
         //Black pawns
         line = new ArrayList<>();
         for(int i = 97 ; i<= 104; i++){
-            line.add(new Square(new Pawns(Color.BLACK, new Position(2,(char) i))));
+            line.add(new Square(new Pawns(Color.BLACK, new Position(7,(char) i))));
         }
         board.add(line);
         
         for(int i=0; i<4; i++){
             line = new ArrayList<>();
-            for(int j=0; i<8; i++){
+            for(int j=0; j<8; j++){
                 line.add(new Square(null));
             }
             board.add(line);
@@ -69,7 +71,7 @@ public class ChessBoard {
         //White pawns
         line = new ArrayList<>();
         for(int i = 97 ; i<= 104; i++){
-            line.add(new Square(new Pawns(Color.WHITE, new Position(7,(char) i))));
+            line.add(new Square(new Pawns(Color.WHITE, new Position(2,(char) i))));
         }
         board.add(line);
         
@@ -103,14 +105,49 @@ public class ChessBoard {
         return board;
     }
 
-    public Square getNeighbour(int x, int y, int xOffset, int yOffset) {
-        int neighbourX = x + xOffset;
-        int neighbourY = y + yOffset;
+    public Square getNeighbour(Position pos, int xOffset, int yOffset) {
+        int x = pos.getX();
+        char y = pos.getY();
+        int neighbourX = (SIZE- (x + xOffset));
+        int neighbourY = (y-A) + yOffset;
         Square ret = null;
         if ((neighbourX >= 0) && (neighbourX<SIZE) && (neighbourY>=0) && (neighbourY<SIZE)){
             ret = board.get(neighbourX).get(neighbourY);
         }
         return ret;
     }
+    
+    public Square getSquare(Position p){
+        return board.get(SIZE-p.getX()).get(p.getY()-A);
+    }
+
+    @Override
+    public String toString() {
+        String ret = "  ";
+        for(int i=0; i<SIZE; i++){
+            ret+="  ";
+            ret+=(char) (i + 65);
+            ret+=" ";
+        }
+        ret+="\n  ---------------------------------\n";
+        for (int i =0; i<SIZE; i++){
+                ret+=(SIZE-i)+" |";
+            for(int j =0; j<SIZE; j++){
+                Piece p = board.get(i).get(j).getPiece();
+                if(p != null){
+                    ret+=board.get(i).get(j).toString();
+                }
+                else{
+                    ret+="   ";
+                }
+                ret+="|";
+            }
+            ret+="\n";
+            ret+="  ---------------------------------\n";
+        }
+        return ret;
+    }
+    
+    
 
 }

@@ -4,7 +4,7 @@ package project;
  *
  * @author Claire, Esther & Orann
  */
-public class Position {
+public class Position extends Object {
     private int x;
     private char y;
 
@@ -44,5 +44,40 @@ public class Position {
      */
     public char getY() {
         return y;
-    }   
+    }
+
+    @Override
+    public String toString() {
+        return ""+y+x;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Position other = (Position) obj;
+        if (this.x != other.x) {
+            return false;
+        }
+        if (this.y != other.y) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+    
 }

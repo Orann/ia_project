@@ -14,6 +14,7 @@ public class Knight extends Piece{
 
     public Knight(Color color, Position position) {
         super(color, position);
+        this.name = "Kn";
     }
 
     @Override
@@ -32,7 +33,7 @@ public class Knight extends Piece{
             {-2, -1}
         };
         for (int[] o : offsets) {
-            Square square = game.getNeighbour(x-1,(int) (y - 'a'),o[0], o[1]);
+            Square square = game.getNeighbour(this.position,o[0], o[1]);
             if (square != null && (square.getPiece() == null || isOpponent(square.getPiece()))) {
                 possibleMoves.add(new Position(x+o[0], (char) (y+o[1])));
             }

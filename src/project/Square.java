@@ -20,6 +20,9 @@ public class Square {
     public Piece getPiece() {
         return piece;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return piece.toString();
+    }    
 }

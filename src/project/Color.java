@@ -5,8 +5,8 @@ package project;
  * @author Claire, Esther & Orann
  */
 public enum Color {
-    WHITE("White"),
-    BLACK("Black");
+    WHITE("W"),
+    BLACK("B");
 
     private String name = "";
 

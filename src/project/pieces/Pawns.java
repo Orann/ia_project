@@ -11,40 +11,39 @@ import project.Square;
  * @author Claire, Esther & Orann
  */
 public class Pawns extends Piece {
+    Position intialPosition;
 
     public Pawns(Color color, Position position) {
         super(color, position);
+        intialPosition = this.position;
+        this.name = "P ";
     }
 
     @Override
     public ArrayList<Position> getPossibleMoves(ChessBoard game) {
         ArrayList<Position> possibleMoves = new ArrayList<>();
-        boolean color = (this.getColor() == Color.WHITE);
-        int dx = color ? -1 : 1;
+        boolean isWhite = (this.getColor() == Color.WHITE);
+        int dx = isWhite ? 1 : -1;
         int x = this.position.getX();
         char y = this.position.getY();
 
-        Square ahead = game.getNeighbour(x-1,(int) (y - 'a'),dx, 0);
-        if (ahead.getPiece() == null) {
-            possibleMoves.add(new Position(ahead.getPiece().getPosition()));
-            if (x == 6 && color) {
-                Square aheadsecond = game.getNeighbour(x-1,(int) (y - 'a'),dx - 1, 0);
-                if (aheadsecond.getPiece() == null) {
-                    possibleMoves.add(new Position(aheadsecond.getPiece().getPosition()));
-                }
-            } else if (x == 1 && !color) {
-                Square aheadsecond = game.getNeighbour(x-1,(int) (y - 'a'),dx + 1, 0);
-                if (aheadsecond.getPiece() == null) {
-                    possibleMoves.add(new Position(aheadsecond.getPiece().getPosition()));
+        Square ahead = game.getNeighbour(this.position, dx, 0);
+        if (ahead != null && ahead.isEmpty()) {
+            possibleMoves.add(new Position(x+dx, y));
+            if (this.position.equals(this.intialPosition)) {
+                Square aheadsecond = game.getNeighbour(this.position, 2*dx, 0);
+                if (aheadsecond!=null && aheadsecond.isEmpty()) {
+                    possibleMoves.add(new Position(x+(2*dx), y));
                 }
             }
         }
-        Square aheadLeft = game.getNeighbour(x-1,(int) (y - 'a'),dx, -1);
-        if (aheadLeft != null && aheadLeft.getPiece() != null && isOpponent(aheadLeft.getPiece())) {
+
+        Square aheadLeft = game.getNeighbour(this.position, dx, -1);
+        if (aheadLeft != null && !aheadLeft.isEmpty() && isOpponent(aheadLeft.getPiece())) {
             possibleMoves.add(new Position(aheadLeft.getPiece().getPosition()));
         }
-        Square aheadRight = game.getNeighbour(x-1,(int) (y - 'a'),dx, 1);
-        if (aheadRight != null && aheadRight.getPiece() != null && isOpponent(aheadRight.getPiece())) {
+        Square aheadRight = game.getNeighbour(this.position, dx, 1);
+        if (aheadRight != null && !aheadRight.isEmpty() && isOpponent(aheadRight.getPiece())) {
             possibleMoves.add(new Position(aheadRight.getPiece().getPosition()));
         }
         return possibleMoves;
