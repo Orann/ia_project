@@ -17,6 +17,7 @@ public class Pawns extends Piece {
         super(color, position);
         intialPosition = this.position;
         this.name = "P ";
+        weight = 1;
     }
 
     @Override

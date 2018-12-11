@@ -7,13 +7,15 @@ import java.util.ArrayList;
  * @author Claire, Esther & Orann
  */
 public class Node {
-    private String move;
+    private ArrayList<Position> move;
     private int heuristic;
     private ArrayList<Node> children;
     private boolean isOurMove;
 
-    public Node(String move, int heuristic, boolean isOurMove) {
-        this.move = move;
+    public Node(Position from, Position to, int heuristic, boolean isOurMove) {
+        this.move = new ArrayList<>();
+        this.move.add(from);
+        this.move.add(to);
         this.heuristic = heuristic;
         this.children = new ArrayList<>();
         this.isOurMove = isOurMove;
@@ -23,7 +25,7 @@ public class Node {
         this.children.add(child);
     }
 
-    public String getMove() {
+    public ArrayList<Position> getMove() {
         return move;
     }
 

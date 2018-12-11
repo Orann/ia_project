@@ -15,6 +15,7 @@ public class Knight extends Piece{
     public Knight(Color color, Position position) {
         super(color, position);
         this.name = "Kn";
+        weight = 3;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package project;
 
 import java.util.ArrayList;
+import project.pieces.Piece;
 /**
  *  TODO : 
  * * currently, heuristic depends only of the leafs, but it has to depend of the parent nodes
@@ -18,6 +19,7 @@ public class Agent {
     private final ChessBoard belief;
     private final Sensor sensor;
     private final Effector effector;
+    private Color color;
     private static final int MAX_DEPTH = 5;
     private final int MAX_HEURISTIC = 1000;
 
@@ -25,10 +27,15 @@ public class Agent {
         this.belief = new ChessBoard();
         this.sensor = sensor;
         this.effector = effector;
+        this.color = Color.BLACK;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
     
     public void minMax(){
-        Node root = new Node("", -1 , true);
+        Node root = new Node(new Position(0, '0'), new Position(0, '0'), -1 , true);
         int maxHeuristic = ConstructTree(root, 0, belief.clone());
     }
     
@@ -48,11 +55,11 @@ public class Agent {
         else{
             ChessBoard newChessBoard = tmpChessBoard.clone();
             newChessBoard.doMove(n.getMove());
-            ArrayList<String> moves = getAllPossibleMoves(n.isOurMove(), tmpChessBoard);
+            ArrayList<ArrayList<Position>> moves = getAllPossibleMoves(n.isOurMove(), tmpChessBoard);
             int bestHeuristic = bestHeuristicInit(n.isOurMove());
             int heuristic;
-            for(String move : moves){
-                Node newNode = new Node(move, -1, true); //-1 because node's heuristic isn't known yet
+            for(ArrayList<Position> move : moves){
+                Node newNode = new Node(move.get(0), move.get(1), -1, true); //-1 because node's heuristic isn't known yet
                 n.addChild(newNode);
                 heuristic = ConstructTree(newNode, depth+1, newChessBoard);
                 if(isBestHeuristic(heuristic, bestHeuristic, n.isOurMove())){
@@ -64,8 +71,41 @@ public class Agent {
         }            
     }
 
-    private ArrayList<String> getAllPossibleMoves(boolean ourMove, ChessBoard currentBoard) {
-        return null;
+    private ArrayList<ArrayList<Position>> getAllPossibleMoves(boolean ourMove, ChessBoard currentBoard) {
+        Piece piece; 
+        Position positionPiece;
+        ArrayList<Position> move;
+        ArrayList<ArrayList<Position>> possibleMoves = new ArrayList<>();
+        Color colorMove;
+        if(ourMove){
+            colorMove = color;
+        } else {
+            if(color == Color.BLACK){
+                colorMove = Color.WHITE;
+            } else {
+                colorMove = Color.BLACK;
+            }
+        }
+        
+        for(int i = 0 ; i < 8 ; i++){
+            for(int j = 0 ; j < 8 ; j++){                
+                piece = currentBoard.getBoard().get(i).get(j).getPiece();
+                positionPiece = piece.getPosition();
+                if(piece != null){
+                    if(piece.getColor() == colorMove){
+                        for(Position to : piece.getPossibleMoves(currentBoard)){
+                            move = new ArrayList<>();
+                            move.add(positionPiece);
+                            move.add(to);
+                            possibleMoves.add(move);
+                            move.clear();
+                        }
+                    }                    
+                }
+                
+            }
+        }        
+        return possibleMoves;
     }
 
     private int bestHeuristicInit(boolean ourMove) {
@@ -103,8 +143,16 @@ public class Agent {
      * @param tmpChessBoard
      * @return 
      */
-    private int getMoveHeuristic(String move, ChessBoard tmpChessBoard) {
-        return -1;
+    private int getMoveHeuristic(ArrayList<Position> move, ChessBoard tmpChessBoard) {       
+        Square piece = tmpChessBoard.getSquare(move.get(0));
+        int heuristic = -1 * (piece.getPiece().getWeight());
+        
+        Square goTo = tmpChessBoard.getSquare(move.get(1));
+        if(goTo.getPiece() != null){
+           heuristic += goTo.getPiece().getWeight();
+        }
+        
+        return heuristic;
     }
 
 }
