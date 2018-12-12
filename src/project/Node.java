@@ -1,31 +1,22 @@
 package project;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author Claire, Esther & Orann
  */
 public class Node {
-    private ArrayList<Position> move;
+    private Move move;
     private int heuristic;
-    private ArrayList<Node> children;
-    private boolean isOurMove;
+    private final int HEURISTIC_INIT = 12000;
+    private final Node parent;
 
-    public Node(Position from, Position to, int heuristic, boolean isOurMove) {
-        this.move = new ArrayList<>();
-        this.move.add(from);
-        this.move.add(to);
-        this.heuristic = heuristic;
-        this.children = new ArrayList<>();
-        this.isOurMove = isOurMove;
-    }
-    
-    public void addChild(Node child){
-        this.children.add(child);
-    }
+    public Node(Move move, Node parent) {
+        this.move = move;
+        this.heuristic = HEURISTIC_INIT;
+        this.parent = parent;
+    }    
 
-    public ArrayList<Position> getMove() {
+    public Move getMove() {
         return move;
     }
 
@@ -33,17 +24,19 @@ public class Node {
         return heuristic;
     }
 
-    public ArrayList<Node> getChildren() {
-        return children;
-    }
-
-    public boolean isOurMove() {
-        return isOurMove;
-    }
-
     public void setHeuristic(int heuristic) {
         this.heuristic = heuristic;
     }
+
+    public Node getParent() {
+        return parent;
+    }
     
-    
+    public boolean isHeuristicInit(){
+        return heuristic==HEURISTIC_INIT;
+    }
+
+    public void setMove(Move move) {
+        this.move = move;
+    }
 }

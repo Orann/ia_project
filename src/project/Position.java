@@ -1,10 +1,12 @@
 package project;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Claire, Esther & Orann
  */
-public class Position extends Object {
+public class Position extends Object  implements Serializable {
     private int x;
     private char y;
 

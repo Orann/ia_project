@@ -1,5 +1,6 @@
 package project;
 
+import java.io.Serializable;
 import project.pieces.Rook;
 import project.pieces.Queen;
 import project.pieces.Pawns;
@@ -13,7 +14,7 @@ import project.pieces.Piece;
  *
  * @author Claire, Esther & Orann
  */
-public class ChessBoard {
+public class ChessBoard implements Serializable {
     private ArrayList<ArrayList<Square>> board;
     public int SIZE = 8;
     public int A = (int) 'a';
@@ -89,16 +90,19 @@ public class ChessBoard {
     }
     
     public ChessBoard(ChessBoard board){
-        this.board = (ArrayList<ArrayList<Square>>) board.getBoard().clone();
-    }
-    
-    @Override
-    public ChessBoard clone(){
-        return new ChessBoard(this);
-    }
-    
-    public void doMove(String move){
+        this.board = new ArrayList<>();
         
+    }
+    
+    
+    
+    public void doMove(Move move){
+        Square squareTo = this.getSquare(move.getTo());
+        Square squareFrom = this.getSquare(move.getFrom());
+        squareFrom.getPiece().setPosition(new Position(move.getTo()));
+    
+        squareTo.setPiece(squareFrom.getPiece());
+        squareFrom.setPiece(null);
     }
 
     public ArrayList<ArrayList<Square>> getBoard() {
@@ -146,6 +150,17 @@ public class ChessBoard {
             ret+="  ---------------------------------\n";
         }
         return ret;
+    }
+    
+    public void setKingWeight(Color c){
+        if (c == Color.BLACK){
+            getSquare(new Position(8, 'e')).getPiece().setWeight(200);
+            System.out.println("BLACK KING : "+getSquare(new Position(8, 'e')).getPiece().getWeight());
+        }
+        else{
+            getSquare(new Position(1, 'e')).getPiece().setWeight(200);
+            System.out.println("WHITE KING : "+getSquare(new Position(1, 'e')).getPiece().getWeight());
+        }
     }
     
     

@@ -25,7 +25,7 @@ public class UCI {
     // ATTRIBUTES
     // ===============================================================================================
     private ChessBoard chessboard;
-//  private AI ai;
+    private Agent ai;
     private int nbOfMoves = 0;
 
     // ===============================================================================================
@@ -43,21 +43,16 @@ public class UCI {
 
     private void isReady() {
         System.out.println("readyok");
-        System.out.println("bestmove b7b6");
     }
 
     private void newGame() {
         this.chessboard = new ChessBoard();
-        // this.ai = new AI(this.chessboard);
+        this.ai = new Agent();
     }
 
     private void newPosition(String input) {
         input = input.substring(9).concat(" ");
 
-        if (input.contains("startpos ")) {
-            input = input.substring(9);
-//      ai.setColor(Color.BLACK);
-        }
 
         if (input.contains("moves")) {
             input = input.substring(input.indexOf("moves") + 6);
@@ -65,22 +60,31 @@ public class UCI {
             while (input.length() > 0) {
                 count++;
                 if (count > this.nbOfMoves) {
-                    // Move move = Move.UCIToMove(input);
+                    //System.out.println("input" + input);
+                    Move move = new Move(input.substring(0,4));
                     this.nbOfMoves++;
-//          this.chessboard.makeMove(move);
+                    this.ai.getBelief().doMove(move);
                 }
                 input = input.substring(input.indexOf(' ') + 1);
             }
 
         }
+        if (nbOfMoves==1) {
+            System.out.println(Color.BLACK);
+            ai.setColor(Color.BLACK);
+        }
+        else if(nbOfMoves == 0){
+            System.out.println(Color.WHITE);
+            ai.setColor(Color.WHITE);
+        }
     }
 
     private void go() {
-        //Move bestMove = ai.chooseBestMove();
+        Move bestMove = ai.minMax();
         String UCIMove = "0000";
 
-        //if (bestMove !=  null)
-        //      UCIMove = Move.moveToUCI(bestMove);
+        if (bestMove !=  null)
+              UCIMove = bestMove.toString();
         System.out.println("bestmove " + UCIMove);
     }
 

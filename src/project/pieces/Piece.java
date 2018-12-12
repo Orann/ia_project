@@ -1,5 +1,6 @@
 package project.pieces;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import project.ChessBoard;
 import project.Color;
@@ -11,7 +12,7 @@ import project.Position;
  * 
  * @author Claire, Esther & Orann
  */
-public abstract class Piece {
+public abstract class Piece  implements Serializable {
     private Color color;
     protected Position position;
     protected String name;
@@ -20,6 +21,13 @@ public abstract class Piece {
     public Piece(Color color, Position position) {
         this.color = color;
         this.position = position;
+    }
+    
+    public Piece(Piece p){
+        this.color = p.color;
+        this.name = p.name;
+        this.weight = p.weight;
+        this.position = new Position(p.getPosition());
     }
     
     public abstract ArrayList<Position> getPossibleMoves(ChessBoard game);
@@ -48,8 +56,9 @@ public abstract class Piece {
     public String toString() {
         return this.color.toString()+this.name;
     }
-    
-    
-    
-    
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+   
 }

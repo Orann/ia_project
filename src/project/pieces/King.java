@@ -15,6 +15,7 @@ public class King extends Piece{
     public King(Color color, Position position) {
         super(color, position);
         this.name = "Ki";
+        this.weight = 90;
     }
     
     boolean inCheck;

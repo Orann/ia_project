@@ -1,12 +1,13 @@
 package project;
 
+import java.io.Serializable;
 import project.pieces.Piece;
 
 /**
  *
  * @author Claire, Esther & Orann
  */
-public class Square {
+public class Square  implements Serializable {
     private Piece piece;
 
     public Square(Piece piece) {
@@ -24,5 +25,11 @@ public class Square {
     @Override
     public String toString() {
         return piece.toString();
-    }    
+    }   
+
+    public void setPiece(Piece piece) {
+        this.piece = piece;
+    }
+    
+    
 }

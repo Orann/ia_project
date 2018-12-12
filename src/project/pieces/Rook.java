@@ -18,6 +18,7 @@ public class Rook extends Piece {
         this.name = "R ";
         weight = 5;
     }
+    
 
     @Override
     public ArrayList<Position> getPossibleMoves(ChessBoard game) {
