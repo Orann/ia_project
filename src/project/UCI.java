@@ -48,6 +48,7 @@ public class UCI {
     private void newGame() {
         this.chessboard = new ChessBoard();
         this.ai = new Agent();
+        nbOfMoves = 0; 
     }
 
     private void newPosition(String input) {

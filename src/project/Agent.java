@@ -1,6 +1,7 @@
 package project;
 
 import java.util.ArrayList;
+import java.util.Random;
 import org.apache.commons.lang3.SerializationUtils;
 import project.pieces.Piece;
 
@@ -28,7 +29,7 @@ public class Agent {
     public Agent() {
         this.belief = new ChessBoard();
         this.color = Color.BLACK;
-        
+
     }
 
     public void setColor(Color color) {
@@ -37,7 +38,6 @@ public class Agent {
     }
 
     public Move minMax() {
-        System.out.println("MinMax ! ");
         rootNode = new Node(null, null);
         ConstructTree(rootNode, 0, SerializationUtils.clone(this.belief));
         return rootNode.getMove();
@@ -55,40 +55,42 @@ public class Agent {
         ChessBoard newChessBoard;
         if (depth == MAX_DEPTH) {
             int heuristic = calculateHeuristic(tmpChessBoard);
-            if (n.getParent().isHeuristicInit() || isBestHeuristic(heuristic, n.getParent().getHeuristic(), depth)) {
-                n.getParent().setHeuristic(heuristic);
-            }
+            n.setHeuristic(heuristic);
             return heuristic;
         } else {
             boolean isOurMove = (depth % 2 == 0);
             ArrayList<Move> moves = getAllPossibleMoves(isOurMove, tmpChessBoard);
+            if (tmpChessBoard.isCheck(getMoveColor(isOurMove)) && depth == 0) {
+                System.out.println(this.belief);
+                System.out.println(moves);
+            }
             //System.out.println(tmpChessBoard);
-            for (Move move : moves) {
-                Node newNode = new Node(move, n);
+            int i = 0;
+            boolean elagage = false;
+            while (i < moves.size() && !elagage) {
+                Node newNode = new Node(moves.get(i), n);
                 newChessBoard = SerializationUtils.clone(tmpChessBoard);
                 newChessBoard.doMove(newNode.getMove());
                 ConstructTree(newNode, depth + 1, newChessBoard);
-            }
-            if (n.getParent() != null) {
-
-                if (n.getParent().isHeuristicInit() || isBestHeuristic(n.getHeuristic(), n.getParent().getHeuristic(), depth)) {
-                    n.getParent().setHeuristic(n.getHeuristic());
-                    if (n.getParent() == rootNode) {
-                        rootNode.setMove(n.getMove());
+                if (n.isHeuristicInit() || isBestHeuristic(newNode.getHeuristic(), n.getHeuristic(), depth)) {
+                    n.setHeuristic(newNode.getHeuristic());
+                    if (n == rootNode) {
+                        rootNode.setMove(newNode.getMove());
                     }
                 }
+                if (n.getParent() != null) {
+                    elagage = (!n.getParent().isHeuristicInit() && !isBestHeuristic(n.getHeuristic(), n.getParent().getHeuristic(), depth - 1));
+                }
+                i++;
             }
             return n.getHeuristic();
         }
     }
 
-    public ArrayList<Move> getAllPossibleMoves(boolean ourMove, ChessBoard currentBoard) {
-        Piece piece;
-        Position positionPiece;
-        ArrayList<Move> possibleMoves = new ArrayList<>();
+    public Color getMoveColor(boolean isOurMove) {
         Color colorMove;
-        if (ourMove) {
-            colorMove = color;
+        if (isOurMove) {
+            colorMove = this.color;
         } else {
             if (color == Color.BLACK) {
                 colorMove = Color.WHITE;
@@ -96,31 +98,36 @@ public class Agent {
                 colorMove = Color.BLACK;
             }
         }
+        return colorMove;
+    }
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                piece = currentBoard.getBoard().get(i).get(j).getPiece();
-                if (piece != null) {
-                    positionPiece = piece.getPosition();
-                    if (piece.getColor() == colorMove) {
-                        for (Position to : piece.getPossibleMoves(currentBoard)) {
+    public ArrayList<Move> getAllPossibleMoves(boolean ourMove, ChessBoard currentBoard) {
+        Piece piece;
+        Position positionPiece;
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+        Color colorMove = getMoveColor(ourMove);
+
+        ArrayList<Piece> pieces = currentBoard.getPieces(colorMove);
+
+        if (!currentBoard.isCheck(colorMove)) {
+            for (Piece p : pieces) {
+                if (p != null) {
+                    positionPiece = p.getPosition();
+                    if (p.getColor() == colorMove) {
+                        for (Position to : p.getPossibleMoves(currentBoard)) {
                             possibleMoves.add(new Move(positionPiece, to));
                         }
                     }
                 }
             }
-        }
-        return possibleMoves;
-    }
-
-    private int bestHeuristicInit(boolean ourMove) {
-        int ret;
-        if (ourMove) {
-            ret = 0;
         } else {
-            ret = MAX_HEURISTIC;
+            Piece King = currentBoard.getKing(colorMove);
+            for (Position to : King.getPossibleMoves(currentBoard)) {
+                possibleMoves.add(new Move(King.getPosition(), to));
+            }
         }
-        return ret;
+
+        return possibleMoves;
     }
 
     /**
@@ -135,31 +142,18 @@ public class Agent {
      */
     private boolean isBestHeuristic(int candidateHeuristic, int parentHeuristic, int depth) {
         boolean ret = false;
-        if ((!(depth % 2 == 0) && (candidateHeuristic > parentHeuristic))
-                || ((depth % 2 == 0) && (candidateHeuristic < parentHeuristic))) {
+        if (((depth % 2 == 0) && (candidateHeuristic > parentHeuristic))
+                || (!(depth % 2 == 0) && (candidateHeuristic < parentHeuristic))) {
             ret = true;
         }
-        return ret;
-    }
-
-    /**
-     * Asks the sensor to know the heuristic of move in the board of
-     * tmpChessBoard
-     *
-     * @param move
-     * @param tmpChessBoard
-     * @return
-     */
-    private int getMoveHeuristic(ArrayList<Position> move, ChessBoard tmpChessBoard) {
-        Square piece = tmpChessBoard.getSquare(move.get(0));
-        int heuristic = -1 * (piece.getPiece().getWeight());
-
-        Square goTo = tmpChessBoard.getSquare(move.get(1));
-        if (goTo.getPiece() != null) {
-            heuristic += goTo.getPiece().getWeight();
+        //if heuristics are equal, return randomly true or false
+        //avoid that the same move are always done
+        if (((depth % 2 == 0) && (candidateHeuristic == parentHeuristic))
+                || (!(depth % 2 == 0) && (candidateHeuristic == parentHeuristic))) {
+            Random random = new Random();
+            ret = random.nextBoolean();
         }
-
-        return heuristic;
+        return ret;
     }
 
     /**
@@ -192,5 +186,4 @@ public class Agent {
         return belief;
     }
 
-    
 }
