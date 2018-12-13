@@ -2,23 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Queen.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Color.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Pawns.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Agent.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Square.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Rook.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Node.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/ChessBoard.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Position.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Knight.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/King.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/UCI.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Piece.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/pieces/Bishop.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Move.java</file>
-            <file>file:/C:/Users/clair/Documents/Travail/2018_2019_UQAC/semestre_automne/intelligence_artificielle/projet/ia_project/src/project/Main.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

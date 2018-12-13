@@ -77,8 +77,11 @@ public class ChessBoard implements Serializable {
 
         //Black pawns
         line = new ArrayList<>();
+        Pawns p;
         for (int i = 97; i <= 104; i++) {
-            line.add(new Square(new Pawns(Color.BLACK, new Position(7, (char) i))));
+            p = new Pawns(Color.BLACK, new Position(7, (char) i));
+            line.add(new Square(p));
+            blackPieces.add(p);
         }
         board.add(line);
 
@@ -93,7 +96,9 @@ public class ChessBoard implements Serializable {
         //White pawns
         line = new ArrayList<>();
         for (int i = 97; i <= 104; i++) {
-            line.add(new Square(new Pawns(Color.WHITE, new Position(2, (char) i))));
+            p = new Pawns(Color.WHITE, new Position(2, (char) i));
+            line.add(new Square(p));
+            whitePieces.add(p);
         }
         board.add(line);
 

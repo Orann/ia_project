@@ -10,9 +10,14 @@ public class Node {
     private final int HEURISTIC_INIT = 12000;
     private final Node parent;
 
-    public Node(Move move, Node parent) {
+    public Node(Move move, Node parent, boolean ourMove) {
         this.move = move;
-        this.heuristic = HEURISTIC_INIT;
+        if(ourMove){
+            this.heuristic = -HEURISTIC_INIT;
+        } else {
+            this.heuristic = HEURISTIC_INIT;
+        }
+
         this.parent = parent;
     }    
 

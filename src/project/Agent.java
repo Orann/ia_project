@@ -38,7 +38,7 @@ public class Agent {
     }
 
     public Move minMax() {
-        rootNode = new Node(null, null);
+        rootNode = new Node(null, null, true);
         ConstructTree(rootNode, 0, SerializationUtils.clone(this.belief));
         return rootNode.getMove();
     }
@@ -51,39 +51,32 @@ public class Agent {
      * @param tmpChessBoard
      * @return the best heuristic of the leafs
      */
-    public int ConstructTree(Node n, int depth, ChessBoard tmpChessBoard) {
+    public void ConstructTree(Node n, int depth, ChessBoard tmpChessBoard) {
         ChessBoard newChessBoard;
+        boolean isOurMove = (depth % 2 ==0);
         if (depth == MAX_DEPTH) {
             int heuristic = calculateHeuristic(tmpChessBoard);
-            n.setHeuristic(heuristic);
-            return heuristic;
+            //if (n.getParent().isHeuristicInit() || isBestHeuristic(heuristic, n.getParent().getHeuristic(), isOurMove)) {
+                n.setHeuristic(heuristic);
+           // }
         } else {
-            boolean isOurMove = (depth % 2 == 0);
             ArrayList<Move> moves = getAllPossibleMoves(isOurMove, tmpChessBoard);
-            if (tmpChessBoard.isCheck(getMoveColor(isOurMove)) && depth == 0) {
-                System.out.println(this.belief);
-                System.out.println(moves);
-            }
             //System.out.println(tmpChessBoard);
-            int i = 0;
-            boolean elagage = false;
-            while (i < moves.size() && !elagage) {
-                Node newNode = new Node(moves.get(i), n);
+            for (Move move : moves) {
+                Node newNode = new Node(move, n, isOurMove);
                 newChessBoard = SerializationUtils.clone(tmpChessBoard);
                 newChessBoard.doMove(newNode.getMove());
                 ConstructTree(newNode, depth + 1, newChessBoard);
-                if (n.isHeuristicInit() || isBestHeuristic(newNode.getHeuristic(), n.getHeuristic(), depth)) {
-                    n.setHeuristic(newNode.getHeuristic());
-                    if (n == rootNode) {
-                        rootNode.setMove(newNode.getMove());
+            }
+            if (n.getParent() != null) {
+
+                if (n.getParent().isHeuristicInit() || isBestHeuristic(n.getHeuristic(), n.getParent().getHeuristic(), isOurMove)) {
+                    n.getParent().setHeuristic(n.getHeuristic());
+                    if (n.getParent() == rootNode) {
+                        rootNode.setMove(n.getMove());
                     }
                 }
-                if (n.getParent() != null) {
-                    elagage = (!n.getParent().isHeuristicInit() && !isBestHeuristic(n.getHeuristic(), n.getParent().getHeuristic(), depth - 1));
-                }
-                i++;
             }
-            return n.getHeuristic();
         }
     }
 
@@ -109,7 +102,7 @@ public class Agent {
 
         ArrayList<Piece> pieces = currentBoard.getPieces(colorMove);
 
-        if (!currentBoard.isCheck(colorMove)) {
+        //if (!currentBoard.isCheck(colorMove)) {
             for (Piece p : pieces) {
                 if (p != null) {
                     positionPiece = p.getPosition();
@@ -120,12 +113,12 @@ public class Agent {
                     }
                 }
             }
-        } else {
+        /*} else {
             Piece King = currentBoard.getKing(colorMove);
             for (Position to : King.getPossibleMoves(currentBoard)) {
                 possibleMoves.add(new Move(King.getPosition(), to));
             }
-        }
+        }*/
 
         return possibleMoves;
     }
@@ -140,19 +133,19 @@ public class Agent {
      * false if they concern the opponent's moves
      * @return
      */
-    private boolean isBestHeuristic(int candidateHeuristic, int parentHeuristic, int depth) {
+    private boolean isBestHeuristic(int candidateHeuristic, int parentHeuristic, boolean isOurMove) {
         boolean ret = false;
-        if (((depth % 2 == 0) && (candidateHeuristic > parentHeuristic))
-                || (!(depth % 2 == 0) && (candidateHeuristic < parentHeuristic))) {
+        if ((isOurMove && (candidateHeuristic > parentHeuristic))
+                || (!isOurMove && (candidateHeuristic <= parentHeuristic))) {
             ret = true;
         }
         //if heuristics are equal, return randomly true or false
         //avoid that the same move are always done
-        if (((depth % 2 == 0) && (candidateHeuristic == parentHeuristic))
-                || (!(depth % 2 == 0) && (candidateHeuristic == parentHeuristic))) {
+       /* if ((isOurMove && (candidateHeuristic == parentHeuristic))
+                || (!isOurMove && (candidateHeuristic == parentHeuristic))) {
             Random random = new Random();
             ret = random.nextBoolean();
-        }
+        }*/
         return ret;
     }
 
